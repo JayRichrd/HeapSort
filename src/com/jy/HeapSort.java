@@ -45,23 +45,27 @@ public class HeapSort {
 	 */
 	public static void buildMaxHeap(DataWrap[] dataWraps, int lastIndex) {
 		// 从lastIndex的父节点(lastIndex - 1) / 2开始，逐步递减直到根节点
-		for (int i = (lastIndex - 1) / 2; i >= 0; i--) {
+		for (int i = lastIndex - 1 >> 1; i >= 0; i--) {
 			// 当前将用来判断的节点
 			int currentNode = i;
+			// 左子节点
+			int leftNode = (currentNode << 1) + 1;
 			// 当前节点存在子节点，即至少存在左子节点
-			while (currentNode * 2 + 1 <= lastIndex) {
+			while (leftNode <= lastIndex) {
 				// 保存当前节点的两个子节点中较大的节点的索引
-				int biggerNode = currentNode * 2 + 1;
+				int biggerNode = leftNode;
+				// 右子节点
+				int rightNode = (currentNode << 1) + 2;
 				// 当前节点存在右子节点，并且右子节点大于左子节点
-				if (currentNode * 2 + 2 <= lastIndex
-						&& dataWraps[currentNode * 2 + 1].compareTo(dataWraps[currentNode * 2 + 2]) < 0)
-					biggerNode = currentNode * 2 + 2;
+				if (rightNode <= lastIndex && dataWraps[leftNode].compareTo(dataWraps[rightNode]) < 0)
+					biggerNode = rightNode;
 				// 将当前节点和它的较大的节点比较，并根据大小情况选择交换
 				if (dataWraps[currentNode].compareTo(dataWraps[biggerNode]) >= 0) // 如果当前节点不小于较大子节点，直接结束本次while循环
 					break;
 				swap(dataWraps, currentNode, biggerNode);
 				// 将biggerNode的值赋给currentNode继续while循环，保证当前节点的值始终大于左右子节点的值
 				currentNode = biggerNode;
+				leftNode = (currentNode << 1) + 1;
 
 			}
 		}
